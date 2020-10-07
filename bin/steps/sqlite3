@@ -19,12 +19,16 @@ sqlite3_install() {
   APT_OPTIONS="$APT_OPTIONS -o dir::cache=$APT_CACHE_DIR"
   APT_OPTIONS="$APT_OPTIONS -o dir::state=$APT_STATE_DIR"
   APT_OPTIONS="$APT_OPTIONS -o dir::etc::sourcelist=/etc/apt/sources.list"
+  # Prevent APT from using additional sources from /etc/apt/sources.list.d/,
+  # since they are not required to download sqlite3 and in some cases can cause
+  # issues (for example on Cedar-14 the ESM sources there require credentials).
+  APT_OPTIONS="$APT_OPTIONS -o dir::etc::sourceparts=/dev/null"
 
-  apt-get $APT_OPTIONS update > /dev/null 2>&1
+  apt-get $APT_OPTIONS -qq update
   if [ -z "$HEADERS_ONLY" ]; then
-    apt-get $APT_OPTIONS -y -d --reinstall install libsqlite3-dev sqlite3 > /dev/null 2>&1
+    apt-get $APT_OPTIONS -y -qq -d --reinstall install libsqlite3-dev sqlite3
   else
-    apt-get $APT_OPTIONS -y -d --reinstall install libsqlite3-dev
+    apt-get $APT_OPTIONS -y -qq -d --reinstall install libsqlite3-dev
   fi
 
   find "$APT_CACHE_DIR/archives/" -name "*.deb" -exec dpkg -x {} "$HEROKU_PYTHON_DIR/sqlite3/" \;

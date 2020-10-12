@@ -4,5 +4,5 @@ AWS_ACCESS_KEY_ID
 AWS_SECRET_ACCESS_KEY
 
 # Uncomment these if you need to override the default S3 bucket and/or path prefixes.
-# S3_BUCKET
-# S3_PREFIX
+S3_BUCKET=ampie
+# S3_PREFIX=python-binaries

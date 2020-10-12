@@ -72,6 +72,7 @@ CONFIGURE_OPTS=(
   "--with-ensurepip=no"
   # Build the `pyexpat` module using the `expat` library in the stack image (which will
   # automatically receive security updates), rather than CPython's vendored version.
+  "--enable-shared"
   "--with-system-expat"
 )
 
